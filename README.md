@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/badge/Markitdown-✓-000?style=flat-square&logo=microsoft&logoColor=00D4FF&color=000" alt="markitdown">
 </p>
 
-<h1 align="center">⚡ Apeiron (ἄπειρον)</h1>
+<h1 align="center">⚡ Apeiron</h1>
 
 <p align="center">
   <b>Unlimited Web Access for AI Agents</b><br>
