@@ -7,12 +7,12 @@ reCAPTCHA, and any other wall between an AI and the information it needs.
 Core philosophy: information wants to be free. Apeiron is the tool that
 makes it so.
 
-    from apeiron import search, fetch
+    from apeiron import search_sync, fetch_sync, learn_sync
 
-    results = search("quantum computing 2026")
-    content = fetch("https://arxiv.org/pdf/2203.02155.pdf")
-    content = fetch("https://youtube.com/watch?v=dQw4w9WgXcQ")
-    content = fetch("https://cloudflare-protected.site")
+    results = search_sync("quantum computing 2026")
+    content = fetch_sync("https://arxiv.org/pdf/2203.02155.pdf")
+    content = fetch_sync("https://youtube.com/watch?v=dQw4w9WgXcQ")
+    content = fetch_sync("https://cloudflare-protected.site")
 """
 from __future__ import annotations
 

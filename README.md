@@ -153,28 +153,27 @@ SearXNG  Wiki Reddit  GH  HTTP   BROWSER    MEDIA
 ## 💻 Python API
 
 ```python
-from apeiron import search, fetch
+from apeiron import search_sync, fetch_sync, learn_sync
 
 # Search across all sources
-results = search("transformer architecture 2026")
+results = search_sync("transformer architecture 2026")
 for r in results:
     print(f"[{r.source}] {r.title}")
     print(f"  {r.url}")
     print(f"  {r.snippet[:100]}\n")
 
 # Fetch any URL — auto-detects content type
-content = fetch("https://arxiv.org/pdf/2203.02155.pdf")
+content = fetch_sync("https://arxiv.org/pdf/2203.02155.pdf")
 # → PDF auto-detected → Markitdown → clean markdown text
 
-content = fetch("https://youtube.com/watch?v=dQw4w9WgXcQ")
+content = fetch_sync("https://youtube.com/watch?v=dQw4w9WgXcQ")
 # → YouTube auto-detected → yt-dlp → transcript
 
-content = fetch("https://cloudflare-protected-site.com")
+content = fetch_sync("https://cloudflare-protected-site.com")
 # → HTML auto-detected → tier escalation → CloakBrowser → text
 
 # Teach a new domain
-from apeiron import learn
-result = learn("https://example-protected-site.com")
+result = learn_sync("https://example-protected-site.com")
 print(f"Best tier: {result.tier}")  # → cloakbrowser
 ```
 

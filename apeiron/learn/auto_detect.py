@@ -15,7 +15,7 @@ from apeiron.fetch.browser.patchright import fetch_patchright
 from apeiron.fetch.ai_agent.browser_use import fetch_browser_use
 from apeiron.fetch.media.yt_dlp import fetch_youtube
 from apeiron.fetch.jina import fetch_jina
-from apeiron.learn.heuristics import detect_challenge, add_marker
+from apeiron.learn.heuristics import CHALLENGE_MARKERS, detect_challenge, add_marker
 from apeiron.learn.strategy_store import StrategyStore
 from apeiron.learn.git_ops import maybe_commit_new_pattern
 from apeiron.types import FetchResult, Tier, Verdict
@@ -99,7 +99,7 @@ async def fetch(url: str, cache_ttl: int = 300) -> FetchResult:
         if result.verdict == Verdict.SUCCESS and not detect_challenge(result):
             _store.set(url, tier)
 
-            for marker in CHALLENGE_MARKERS_SAMPLE:
+            for marker in CHALLENGE_MARKERS:
                 if marker in result.content.lower():
                     add_marker(marker)
                     maybe_commit_new_pattern(marker, url, tier)
@@ -112,7 +112,7 @@ async def fetch(url: str, cache_ttl: int = 300) -> FetchResult:
             return result
 
         if detect_challenge(result):
-            for marker in CHALLENGE_MARKERS_SAMPLE:
+            for marker in CHALLENGE_MARKERS:
                 if marker in result.content.lower():
                     add_marker(marker)
                     maybe_commit_new_pattern(marker, url, tier)
@@ -141,10 +141,3 @@ async def learn(url: str) -> FetchResult:
         best = FetchResult(url=url, content="", tier=Tier.FALLBACK, verdict=Verdict.ERROR, error="all tiers failed")
 
     return best
-
-
-CHALLENGE_MARKERS_SAMPLE = [
-    "just a moment", "enable javascript", "attention required",
-    "checking your browser", "cloudflare", "turnstile",
-    "captcha", "verify you are human", "blocked", "403 forbidden",
-]
