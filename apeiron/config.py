@@ -7,7 +7,8 @@ from apeiron.types import Tier
 # ── Paths ──────────────────────────────────────────────────
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 STRATEGIES_PATH = PROJECT_DIR / "strategies.json"
-CACHE_DIR = Path(os.getenv("APEIRON_CACHE_DIR", str(PROJECT_DIR / ".cache")))
+DEFAULT_CACHE = Path(os.getenv("XDG_CACHE_HOME", Path.home() / ".cache")) / "apeiron"
+CACHE_DIR = Path(os.getenv("APEIRON_CACHE_DIR", str(DEFAULT_CACHE)))
 
 # ── Infrastructure ─────────────────────────────────────────
 SEARXNG_BASE = os.getenv("APEIRON_SEARXNG", "http://localhost:4004")

@@ -14,11 +14,11 @@ async def search_arxiv(query: str, max_results: int = 5) -> list[SearchHit]:
             "max_results": max_results,
             "sortBy": "relevance",
         }
-        async with httpx.AsyncClient(timeout=20) as client:
+        async with httpx.AsyncClient(timeout=20, follow_redirects=True) as client:
             resp = await client.get(ARXIV_BASE, params=params)
             resp.raise_for_status()
             text = resp.text
-    except Exception:
+    except Exception as e:
         return []
 
     import xml.etree.ElementTree as ET
