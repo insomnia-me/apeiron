@@ -18,6 +18,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 
+dependencies = [
+    "httpx>=0.27",
+]
+
 [project.urls]
 Source = "https://github.com/insomnia-me/apeiron"
 
