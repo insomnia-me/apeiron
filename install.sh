@@ -47,10 +47,10 @@ ok "All extras installed"
 
 log "Installing browser engines..."
 .venv/bin/pip install --quiet cloakbrowser 2>&1 | tail -1
-if command -v .venv/bin/patchright &>/dev/null; then
-  .venv/bin/patchright install chromium 2>&1 | tail -1
+if [ -f ".venv/bin/patchright" ]; then
+  .venv/bin/patchright install chromium 2>&1 | tail -1 || true
 fi
-if command -v .venv/bin/scrapling &>/dev/null; then
+if [ -f ".venv/bin/scrapling" ]; then
   .venv/bin/scrapling install 2>&1 | tail -1 || true
 fi
 .venv/bin/python -m camoufox fetch 2>&1 | tail -1 || true

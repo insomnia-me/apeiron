@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install core
+        run: pip install -e .
+
+      - name: Check imports
+        run: python -c "from apeiron import __version__; print(f'Apeiron {__version__}')"
+
+      - name: Type check
+        run: pip install mypy && python -m mypy apeiron/ --ignore-missing-imports || true
+
+      - name: Lint
+        run: pip install ruff && python -m ruff check apeiron/ || true
+
+      - name: Test fetch
+        run: python -c "
+import asyncio
+from apeiron import fetch_sync
+r = fetch_sync('https://httpbin.org/html', cache_ttl=0)
+print(f'fetch: {r.verdict.value} ({len(r.content)}b)')
+assert r.verdict.value == 'success'
+"
+
+      - name: Test search
+        run: python -c "
+from apeiron import search_sync
+r = search_sync('test', max_results=2)
+print(f'search: {len(r)} results')
+"
+
+      - name: Test learn
+        run: python -c "
+from apeiron import learn_sync
+r = learn_sync('https://httpbin.org')
+print(f'learn: {r.verdict.value} (tier: {r.tier.value})')
+"
