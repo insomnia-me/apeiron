@@ -1,3 +1,4 @@
 {
-  "httpbin.org": "fast"
+  "httpbin.org": "fast",
+  "example.com": "fast"
 }
