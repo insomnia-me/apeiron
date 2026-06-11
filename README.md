@@ -1,4 +1,8 @@
 <p align="center">
+  <img src="images/header.jpg" width="100%" alt="Apeiron">
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/ἄπειρον-Apeiron-00D4FF?style=flat-square&logo=python&logoColor=00D4FF&color=000" alt="apeiron">
   <img src="https://img.shields.io/badge/license-MIT-000?style=flat-square&logo=open-source-initiative&logoColor=00D4FF&color=000" alt="license">
   <img src="https://img.shields.io/badge/Python-3.10+-000?style=flat-square&logo=python&logoColor=00D4FF&color=000" alt="python">
