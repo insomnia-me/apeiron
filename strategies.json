@@ -3,5 +3,7 @@
   "vc.ru": "fast",
   "habr.com": "jina",
   "www.beboss.ru": "jina",
-  "businessmens.ru": "fast"
+  "businessmens.ru": "fast",
+  "httpbin.org": "fast",
+  "example.com": "fast"
 }
