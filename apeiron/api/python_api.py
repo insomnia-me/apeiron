@@ -15,7 +15,7 @@ from apeiron.types import FetchResult, SearchHit, Source
 async def search(query: str, sources: Optional[list[Source]] = None, max_results: int = 10) -> list[SearchHit]:
     """Search across multiple sources. Returns LLM-ready results."""
     if sources is None:
-        sources = [Source.WEB, Source.ARXIV, Source.WIKIPEDIA, Source.REDDIT, Source.GITHUB]
+        sources = [Source.WEB, Source.ARXIV, Source.WIKIPEDIA, Source.GITHUB]
 
     all_hits: list[SearchHit] = []
 
@@ -46,7 +46,7 @@ async def search(query: str, sources: Optional[list[Source]] = None, max_results
 
 
 async def fetch(url: str, cache_ttl: int = 300, proxy: str | None = None) -> FetchResult:
-    """Fetch any URL and extract clean LLM-ready text."""
+    """Fetch a URL and extract clean LLM-ready text when a tier succeeds."""
     return await _fetch(url, cache_ttl)
 
 

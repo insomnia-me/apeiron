@@ -8,7 +8,7 @@ API_BASE = "https://api.semanticscholar.org/graph/v1/paper/search"
 
 async def search_semantic_scholar(query: str, max_results: int = 5) -> list[SearchHit]:
     try:
-        params = {
+        params: dict[str, str | int] = {
             "query": query,
             "limit": max_results,
             "fields": "title,url,abstract,citationCount",

@@ -8,7 +8,7 @@ ARXIV_BASE = "http://export.arxiv.org/api/query"
 
 async def search_arxiv(query: str, max_results: int = 5) -> list[SearchHit]:
     try:
-        params = {
+        params: dict[str, str | int] = {
             "search_query": f"all:{query}",
             "start": 0,
             "max_results": max_results,
@@ -18,7 +18,7 @@ async def search_arxiv(query: str, max_results: int = 5) -> list[SearchHit]:
             resp = await client.get(ARXIV_BASE, params=params)
             resp.raise_for_status()
             text = resp.text
-    except Exception as e:
+    except Exception:
         return []
 
     import xml.etree.ElementTree as ET

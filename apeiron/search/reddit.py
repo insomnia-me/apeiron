@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from apeiron.types import SearchHit, Source
+from apeiron.types import SearchHit
 
 
 async def search_reddit(query: str, max_results: int = 5) -> list[SearchHit]:

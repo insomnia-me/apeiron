@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 import time
-from urllib.parse import urlparse
 
 from apeiron.cache import ResponseCache
 from apeiron.extract.trafilatura import extract_trafilatura
 from apeiron.extract.markitdown import extract_markitdown_from_bytes
-from apeiron.extract.utils import detect_content_type, is_blocked
-from apeiron.fetch.http.curl_cffi import fetch_curl_cffi
+from apeiron.extract.utils import detect_content_type
+from apeiron.fetch.http.curl_cffi import fetch_curl_cffi, fetch_curl_cffi_bytes
 from apeiron.fetch.browser.cloakbrowser import fetch_cloakbrowser
 from apeiron.fetch.browser.camoufox import fetch_camoufox
 from apeiron.fetch.browser.flaresolverr import fetch_flaresolverr
@@ -63,13 +62,32 @@ async def fetch(url: str, cache_ttl: int = 300) -> FetchResult:
         return result
 
     if ctype in ("pdf", "docx", "pptx", "xlsx"):
-        result = await fetch_curl_cffi(url)
-        if result.verdict == Verdict.SUCCESS and result.content:
-            text = extract_markitdown_from_bytes(result.content.encode(), suffix=f".{ctype}")
-            result.content = text
-            result.content_type = "text"
-            _cache.set(url, text)
-        return result
+        content, _headers, error = await fetch_curl_cffi_bytes(url)
+        if error:
+            return FetchResult(url=url, content="", tier=Tier.FAST, verdict=Verdict.ERROR, content_type=ctype, error=error)
+        if not content:
+            return FetchResult(
+                url=url,
+                content="",
+                tier=Tier.FAST,
+                verdict=Verdict.ERROR,
+                content_type=ctype,
+                error=f"empty {ctype} response",
+            )
+
+        text = extract_markitdown_from_bytes(content, suffix=f".{ctype}")
+        if not text.strip():
+            return FetchResult(
+                url=url,
+                content="",
+                tier=Tier.FAST,
+                verdict=Verdict.ERROR,
+                content_type=ctype,
+                error=f"empty {ctype} extraction",
+            )
+
+        _cache.set(url, text)
+        return FetchResult(url=url, content=text, tier=Tier.FAST, verdict=Verdict.SUCCESS, content_type="text")
 
     if ctype == "arxiv":
         result = await fetch_curl_cffi(url)
@@ -78,7 +96,6 @@ async def fetch(url: str, cache_ttl: int = 300) -> FetchResult:
         return result
 
     # 3. HTML — use tier escalation
-    domain = urlparse(url).netloc
     cached_tier = _store.get(url)
 
     if cached_tier and cached_tier in TIER_FETCHERS:

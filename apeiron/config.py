@@ -25,7 +25,7 @@ MAX_RETRIES = int(os.getenv("APEIRON_MAX_RETRIES", "3"))
 MAX_SEARCH_RESULTS = int(os.getenv("APEIRON_MAX_SEARCH", "10"))
 
 # ── Git ops ────────────────────────────────────────────────
-GIT_AUTO_COMMIT = os.getenv("APEIRON_GIT_COMMIT", "true").lower() == "true"
+GIT_AUTO_COMMIT = os.getenv("APEIRON_GIT_COMMIT", "false").lower() == "true"
 
 
 def tier_from_str(s: str) -> Tier:

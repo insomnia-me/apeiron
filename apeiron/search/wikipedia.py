@@ -8,7 +8,7 @@ API_BASE = "https://en.wikipedia.org/w/api.php"
 
 async def search_wikipedia(query: str, max_results: int = 5) -> list[SearchHit]:
     try:
-        params = {
+        params: dict[str, str | int | bool] = {
             "action": "query",
             "list": "search",
             "srsearch": query,
@@ -40,7 +40,7 @@ async def search_wikipedia(query: str, max_results: int = 5) -> list[SearchHit]:
 
 async def fetch_wikipedia(title: str) -> str:
     try:
-        params = {
+        params: dict[str, str | int | bool] = {
             "action": "query",
             "titles": title,
             "prop": "extracts",
