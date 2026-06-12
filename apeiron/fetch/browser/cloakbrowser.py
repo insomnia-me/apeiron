@@ -9,7 +9,7 @@ async def fetch_cloakbrowser(url: str, proxy: str | None = None, headless: bool 
     try:
         from cloakbrowser import launch
 
-        kwargs = dict(headless=headless)
+        kwargs: dict[str, object] = {"headless": headless}
         if proxy:
             kwargs["proxy"] = proxy
         browser = launch(**kwargs)

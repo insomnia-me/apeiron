@@ -1,0 +1,11 @@
+{
+  "mcp": {
+    "servers": {
+      "apeiron": {
+        "command": "python",
+        "args": ["-m", "apeiron.api.mcp_server"],
+        "cwd": "/path/to/apeiron"
+      }
+    }
+  }
+}

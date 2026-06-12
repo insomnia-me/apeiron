@@ -24,3 +24,19 @@ async def fetch_curl_cffi(url: str) -> FetchResult:
             verdict=Verdict.ERROR,
             error=str(e),
         )
+
+
+async def fetch_curl_cffi_bytes(url: str) -> tuple[bytes, dict[str, str], str]:
+    """Fetch binary content with curl_cffi.
+
+    Returns ``(content, headers, error)`` so callers can avoid corrupting binary
+    formats by decoding them as text first.
+    """
+    try:
+        from curl_cffi import requests as cr
+
+        resp = cr.get(url, impersonate="chrome", timeout=30)
+        headers = {str(k).lower(): str(v) for k, v in resp.headers.items()}
+        return bytes(resp.content), headers, ""
+    except Exception as e:
+        return b"", {}, str(e)

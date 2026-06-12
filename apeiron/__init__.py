@@ -1,18 +1,14 @@
-"""Apeiron (ἄπειρον) — Unlimited Web Access for AI Agents.
+"""Apeiron — local-first web search, fetch, and extraction tools for AI agents.
 
-Self-learning, tiered-escalation scraper that combines every free anti-bot
-technology into one autonomous agent. Bypasses Cloudflare, Turnstile, Anubis,
-reCAPTCHA, and any other wall between an AI and the information it needs.
-
-Core philosophy: information wants to be free. Apeiron is the tool that
-makes it so.
+Apeiron provides a CLI, Python API, and MCP server for agent workflows that
+need search results, fetched URL content, extraction, diagnostics, and local
+per-domain strategy learning.
 
     from apeiron import search_sync, fetch_sync, learn_sync
 
-    results = search_sync("quantum computing 2026")
-    content = fetch_sync("https://arxiv.org/pdf/2203.02155.pdf")
-    content = fetch_sync("https://youtube.com/watch?v=dQw4w9WgXcQ")
-    content = fetch_sync("https://cloudflare-protected.site")
+    results = search_sync("agent web access")
+    result = fetch_sync("https://example.com", cache_ttl=0)
+    learned = learn_sync("https://example.com")
 """
 from __future__ import annotations
 

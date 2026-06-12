@@ -3,19 +3,18 @@ requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "apeiron"
+name = "apeiron-agent"
 version = "0.1.0"
-description = "Unlimited Web Access for AI Agents — self-learning, tiered-escalation scraper"
+description = "Local-first web search, fetch, and extraction tools for AI agents"
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
 requires-python = ">=3.10"
-keywords = ["scraping", "web-scraper", "anti-bot", "self-learning", "ai-agent", "mcp"]
+keywords = ["mcp", "ai-agents", "web-search", "web-scraping", "llm", "markdown", "python"]
 authors = [{ name = "insomnia" }]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Topic :: Internet :: WWW/HTTP :: Browsers",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
 ]
 
 dependencies = [
@@ -29,6 +28,14 @@ Source = "https://github.com/insomnia-me/apeiron"
 apeiron = "apeiron.api.cli:main"
 
 [project.optional-dependencies]
+dev = [
+    "build>=1.2",
+    "mypy>=1.10",
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.6",
+    "twine>=5.0",
+]
 all = [
     "curl-cffi>=0.7",
     "trafilatura>=1.12",
@@ -50,12 +57,22 @@ search = [
 ]
 fetch = [
     "curl-cffi>=0.7",
+    "trafilatura>=1.12",
+    "readability-lxml>=0.8",
+    "html2text>=2024",
+]
+browser = [
     "patchright>=1.40",
     "scrapling[fetchers]>=0.4",
     "camoufox[geoip]>=0.4",
     "browser-use>=0.1",
     "cloakbrowser>=0.3",
+]
+media = [
     "yt-dlp>=2024",
+]
+documents = [
+    "markitdown>=0.1",
 ]
 extract = [
     "trafilatura>=1.12",
@@ -70,3 +87,14 @@ mcp = [
 
 [tool.setuptools.packages.find]
 include = ["apeiron*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true

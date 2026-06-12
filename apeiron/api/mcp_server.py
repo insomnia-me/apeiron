@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
@@ -40,14 +39,23 @@ async def apeiron_search(
 
 @mcp.tool()
 async def apeiron_fetch(url: str, cache_ttl: int = 300) -> str:
-    """Fetch any URL and extract clean LLM-ready text. Handles HTML, PDF, YouTube, and more. Automatically bypasses Cloudflare, Turnstile, CAPTCHA.
+    """Fetch a URL and return structured LLM-ready content plus diagnostics.
 
     Args:
         url: URL to fetch
         cache_ttl: Cache TTL in seconds (default: 300)
     """
     result = await fetch(url=url, cache_ttl=cache_ttl)
-    return result.content
+    return json.dumps({
+        "url": result.url,
+        "content": result.content,
+        "tier": result.tier.value,
+        "verdict": result.verdict.value,
+        "content_type": result.content_type,
+        "title": result.title,
+        "elapsed_ms": result.elapsed_ms,
+        "error": result.error,
+    }, indent=2, ensure_ascii=False)
 
 
 @mcp.tool()
@@ -58,7 +66,15 @@ async def apeiron_learn(url: str) -> str:
         url: URL on the domain to learn
     """
     result = await learn(url=url)
-    return f"Best tier: {result.tier.value}, verdict: {result.verdict.value}"
+    return json.dumps({
+        "url": result.url,
+        "tier": result.tier.value,
+        "verdict": result.verdict.value,
+        "content_type": result.content_type,
+        "title": result.title,
+        "elapsed_ms": result.elapsed_ms,
+        "error": result.error,
+    }, indent=2, ensure_ascii=False)
 
 
 def main():

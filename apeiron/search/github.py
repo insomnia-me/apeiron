@@ -6,7 +6,7 @@ from apeiron.types import SearchHit, Source
 
 async def search_github(query: str, max_results: int = 5) -> list[SearchHit]:
     try:
-        params = {
+        params: dict[str, str | int] = {
             "q": query,
             "sort": "stars",
             "order": "desc",

@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Optional
-
 import httpx
 
 from apeiron.config import SEARXNG_BASE
@@ -10,7 +8,7 @@ from apeiron.types import SearchHit, Source
 
 async def search_searxng(query: str, max_results: int = 10) -> list[SearchHit]:
     try:
-        params = {
+        params: dict[str, str | int] = {
             "q": query,
             "format": "json",
             "language": "en",

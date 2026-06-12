@@ -5,9 +5,10 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
-  test:
+  core:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -21,37 +22,44 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install core
-        run: pip install -e .
+      - name: Install deterministic test dependencies
+        run: python -m pip install -e ".[dev,mcp]"
 
-      - name: Check imports
-        run: python -c "from apeiron import __version__; print(f'Apeiron {__version__}')"
+      - name: Unit tests
+        run: python -m pytest -q
 
-      - name: Type check
-        run: pip install mypy && python -m mypy apeiron/ --ignore-missing-imports || true
+      - name: Ruff
+        run: python -m ruff check apeiron tests
 
-      - name: Lint
-        run: pip install ruff && python -m ruff check apeiron/ || true
+      - name: Mypy
+        run: python -m mypy apeiron
 
-      - name: Test fetch
-        run: python -c "
-import asyncio
-from apeiron import fetch_sync
-r = fetch_sync('https://httpbin.org/html', cache_ttl=0)
-print(f'fetch: {r.verdict.value} ({len(r.content)}b)')
-assert r.verdict.value == 'success'
-"
+      - name: Build package
+        run: python -m build
 
-      - name: Test search
-        run: python -c "
-from apeiron import search_sync
-r = search_sync('test', max_results=2)
-print(f'search: {len(r)} results')
-"
+      - name: Check package metadata
+        run: python -m twine check dist/*
 
-      - name: Test learn
-        run: python -c "
-from apeiron import learn_sync
-r = learn_sync('https://httpbin.org')
-print(f'learn: {r.verdict.value} (tier: {r.tier.value})')
-"
+  network-smoke:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install fetch extras
+        run: python -m pip install -e ".[fetch]"
+
+      - name: Fetch example.com
+        run: |
+          python - <<'PY'
+          from apeiron import fetch_sync
+          result = fetch_sync("https://example.com", cache_ttl=0)
+          print(result.verdict.value, result.tier.value, len(result.content))
+          assert result.verdict.value == "success"
+          assert result.content
+          PY

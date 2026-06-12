@@ -1,31 +1,27 @@
 #!/usr/bin/env bash
-# ─────────────────────────────────────────────────────────────
-# Apeiron (ἄπειρον) — Unlimited Web Access for AI Agents
-#   curl -fsSL https://raw.githubusercontent.com/insomnia-me/apeiron/main/install.sh | bash
-# ─────────────────────────────────────────────────────────────
 set -euo pipefail
-REPO="insomnia-me/apeiron"
-TARGET="${HOME}/.apeiron"
-REQUIRED=(python3 git docker)
 
-log()  { printf "\r\033[2K  \033[1;34m▶\033[0m  %s\n" "$*"; }
-ok()   { printf "\r\033[2K  \033[1;32m✔\033[0m  %s\n" "$*"; }
-fail() { printf "\r\033[2K  \033[1;31m✘\033[0m  %s\n" "$*"; exit 1; }
+REPO="insomnia-me/apeiron"
+TARGET="${APEIRON_HOME:-${HOME}/.apeiron}"
+PROFILE="${APEIRON_INSTALL_PROFILE:-fetch,mcp,documents,media}"
+
+log()  { printf "\033[1;34m>\033[0m %s\n" "$*"; }
+ok()   { printf "\033[1;32m✓\033[0m %s\n" "$*"; }
+fail() { printf "\033[1;31m✗\033[0m %s\n" "$*"; exit 1; }
 
 cat << "ART"
-  ⚡ Apeiron (ἄπειρον) — Unlimited Web Access
-  "That which has no boundaries"
+Apeiron — local-first web tools for AI agents
 ART
 
-log "Checking dependencies..."
-for cmd in "${REQUIRED[@]}"; do
-  command -v "$cmd" &>/dev/null || fail "Missing: $cmd"
+log "Checking required dependencies..."
+for cmd in python3 git; do
+  command -v "$cmd" >/dev/null 2>&1 || fail "Missing required command: $cmd"
 done
-ok "All dependencies found"
+ok "Required dependencies found"
 
-log "Cloning repository..."
+log "Cloning or updating repository..."
 if [ -d "$TARGET/.git" ]; then
-  (cd "$TARGET" && git pull --ff-only) || true
+  git -C "$TARGET" pull --ff-only
 else
   git clone --depth=1 "https://github.com/${REPO}.git" "$TARGET"
 fi
@@ -33,56 +29,31 @@ ok "Repository ready at ${TARGET}"
 
 cd "$TARGET"
 
-log "Creating Python virtual environment..."
+log "Creating virtual environment..."
 python3 -m venv .venv
-ok "Virtual environment created"
+.venv/bin/python -m pip install --upgrade pip >/dev/null
+ok "Virtual environment ready"
 
-log "Installing core dependencies..."
-.venv/bin/pip install --quiet -e "." 2>&1 | tail -1
-ok "Core packages installed"
+log "Installing Apeiron profile: ${PROFILE}"
+.venv/bin/pip install -e ".[${PROFILE}]"
+ok "Apeiron installed"
 
-log "Installing all extras..."
-.venv/bin/pip install --quiet -e ".[all]" 2>&1 | tail -1
-ok "All extras installed"
-
-log "Installing browser engines..."
-.venv/bin/pip install --quiet cloakbrowser 2>&1 | tail -1
-if [ -f ".venv/bin/patchright" ]; then
-  .venv/bin/patchright install chromium 2>&1 | tail -1 || true
+if command -v docker >/dev/null 2>&1; then
+  log "Docker found. Optional SearXNG/FlareSolverR infra can be started with: bash scripts/start-infra.sh"
+else
+  log "Docker not found. Skipping optional SearXNG/FlareSolverR infra."
 fi
-if [ -f ".venv/bin/scrapling" ]; then
-  .venv/bin/scrapling install 2>&1 | tail -1 || true
-fi
-.venv/bin/python -m camoufox fetch 2>&1 | tail -1 || true
-ok "Browser engines ready"
 
-log "Starting infrastructure (SearXNG + FlareSolverr)..."
-bash scripts/start-infra.sh 2>&1 | tail -1 || log "Docker infra skipped (optional)"
+cat << EOF
 
-cat << "EOF"
+Apeiron is ready.
 
-  ─────────────────────────────────────────────────────────────
-  ✅  Apeiron installed!
+Try:
+  ${TARGET}/.venv/bin/apeiron doctor
+  ${TARGET}/.venv/bin/apeiron fetch "https://example.com" --json
+  ${TARGET}/.venv/bin/apeiron search "python web scraping" --sources wikipedia github arxiv --json
 
-  Quick test:
-    cd ~/.apeiron
-    .venv/bin/apeiron fetch "https://httpbin.org/html"
-    .venv/bin/apeiron search "quantum computing 2026"
-    .venv/bin/apeiron learn "https://httpbin.org/html"
+MCP server:
+  ${TARGET}/.venv/bin/apeiron serve
 
-  MCP server for your AI agent:
-    .venv/bin/apeiron serve
-
-  Then add to OpenCode config:
-    "mcp": {
-      "servers": {
-        "apeiron": {
-          "command": "python",
-          "args": ["-m", "apeiron.api.mcp_server"],
-          "cwd": "~/.apeiron"
-        }
-      }
-    }
-
-  ─────────────────────────────────────────────────────────────
 EOF
