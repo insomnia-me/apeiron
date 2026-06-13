@@ -78,6 +78,7 @@ apeiron fetch "https://example.com" --json
 apeiron search "python web scraping" --sources wikipedia github arxiv --json
 apeiron learn "https://example.com" --json
 apeiron bench
+apeiron init --target cursor --output .
 ```
 
 ## Web Access Score
@@ -118,6 +119,15 @@ MCP tools:
 | `apeiron_learn("url")` | JSON object with learned tier/verdict diagnostics |
 
 More copy-paste integrations for Claude Desktop, Cursor, OpenCode, OpenAI Agents SDK, and plain Python agent loops are in [docs/integrations.md](docs/integrations.md).
+
+Generate starter files directly:
+
+```bash
+apeiron init --target claude --output .
+apeiron init --target cursor --output .
+apeiron init --target opencode --output .
+apeiron init --target openai-agents --output .
+```
 
 ## Python API
 

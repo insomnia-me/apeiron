@@ -45,6 +45,12 @@ def main(fetch_fn=None):
     p_bench.add_argument("--json", action="store_true", help="Print structured JSON")
     p_bench.add_argument("--cache-ttl", type=int, default=0, help="Cache TTL for benchmark fetches")
 
+    # init
+    p_init = sub.add_parser("init", help="Generate agent integration config or wrapper files")
+    p_init.add_argument("--target", choices=["claude", "cursor", "opencode", "openai-agents"], required=True)
+    p_init.add_argument("--output", default=".", help="Directory to write generated files")
+    p_init.add_argument("--force", action="store_true", help="Overwrite existing files")
+
     args = parser.parse_args()
 
     if args.cmd == "search":
@@ -59,6 +65,8 @@ def main(fetch_fn=None):
         _cmd_doctor(args)
     elif args.cmd == "bench":
         _cmd_bench(args, fetch_fn=fetch_fn)
+    elif args.cmd == "init":
+        _cmd_init(args)
     else:
         parser.print_help()
 
@@ -159,6 +167,14 @@ def _cmd_bench(args, fetch_fn=None):
         print(json.dumps(report.to_dict(), indent=2, ensure_ascii=False))
     else:
         print(format_benchmark_report(report))
+
+
+def _cmd_init(args):
+    from apeiron.init import generate_init_files
+
+    written = generate_init_files(args.target, args.output, force=args.force)
+    for path in written:
+        print(f"Wrote {path}")
 
 
 def _fetch_result_payload(result):

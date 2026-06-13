@@ -5,6 +5,19 @@ Apeiron can be used two ways:
 - run the MCP server and let an agent client call `apeiron_search`, `apeiron_fetch`, and `apeiron_learn`
 - wrap the Python API as native function tools in your own agent runtime
 
+## Generate Starter Files
+
+Use `apeiron init` when you want files written into a project instead of copying snippets by hand:
+
+```bash
+apeiron init --target claude --output .
+apeiron init --target cursor --output .
+apeiron init --target opencode --output .
+apeiron init --target openai-agents --output .
+```
+
+Existing files are not overwritten unless you pass `--force`.
+
 ## Claude Desktop
 
 Install Apeiron with the MCP extra, then add this to your Claude Desktop MCP config:

@@ -39,3 +39,9 @@ Docker starts local SearXNG and FlareSolverr. It is not required for basic CLI, 
 ## Connect An Agent
 
 After install, use [Agent Integrations](integrations.md) for copy-paste configs and tool wrappers.
+
+For the fastest path, generate starter files:
+
+```bash
+apeiron init --target cursor --output .
+```
