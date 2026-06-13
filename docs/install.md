@@ -35,3 +35,7 @@ bash scripts/start-infra.sh
 ```
 
 Docker starts local SearXNG and FlareSolverr. It is not required for basic CLI, Python API, or MCP usage.
+
+## Connect An Agent
+
+After install, use [Agent Integrations](integrations.md) for copy-paste configs and tool wrappers.

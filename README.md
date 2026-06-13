@@ -117,6 +117,8 @@ MCP tools:
 | `apeiron_fetch("url")` | JSON object with content, tier, verdict, content type, title, elapsed time, and error |
 | `apeiron_learn("url")` | JSON object with learned tier/verdict diagnostics |
 
+More copy-paste integrations for Claude Desktop, Cursor, OpenCode, OpenAI Agents SDK, and plain Python agent loops are in [docs/integrations.md](docs/integrations.md).
+
 ## Python API
 
 ```python
