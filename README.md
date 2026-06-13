@@ -79,6 +79,7 @@ apeiron search "python web scraping" --sources wikipedia github arxiv --json
 apeiron learn "https://example.com" --json
 apeiron bench
 apeiron init --target cursor --output .
+apeiron demo
 ```
 
 ## Web Access Score
@@ -91,6 +92,16 @@ apeiron bench --json
 ```
 
 The command reports an `Apeiron Web Access Score` plus per-URL verdicts, tiers, content sizes, and failure reasons. Use it before and after installing optional extras or browser tiers to see what actually improved on your machine. See [docs/benchmarks.md](docs/benchmarks.md).
+
+## Visual Demo
+
+Run a local browser UI for quick URL-to-content testing:
+
+```bash
+apeiron demo
+```
+
+It opens a minimal page with a URL input, extracted content, verdict, tier, content type, and character count.
 
 ## MCP server
 

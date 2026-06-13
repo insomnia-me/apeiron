@@ -18,6 +18,16 @@ apeiron init --target openai-agents --output .
 
 Existing files are not overwritten unless you pass `--force`.
 
+## Visual Smoke Test
+
+Use the local demo when you want to see the fetch pipeline before wiring it into an agent:
+
+```bash
+apeiron demo
+```
+
+The page shows the extracted content and the diagnostics an agent receives: `verdict`, `tier`, `content_type`, and output size.
+
 ## Claude Desktop
 
 Install Apeiron with the MCP extra, then add this to your Claude Desktop MCP config:

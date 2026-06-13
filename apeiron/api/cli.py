@@ -51,6 +51,12 @@ def main(fetch_fn=None):
     p_init.add_argument("--output", default=".", help="Directory to write generated files")
     p_init.add_argument("--force", action="store_true", help="Overwrite existing files")
 
+    # demo
+    p_demo = sub.add_parser("demo", help="Start a local visual fetch demo")
+    p_demo.add_argument("--host", default="127.0.0.1", help="Host to bind")
+    p_demo.add_argument("--port", type=int, default=8765, help="Port to bind")
+    p_demo.add_argument("--no-open", action="store_true", help="Do not open a browser")
+
     args = parser.parse_args()
 
     if args.cmd == "search":
@@ -67,6 +73,8 @@ def main(fetch_fn=None):
         _cmd_bench(args, fetch_fn=fetch_fn)
     elif args.cmd == "init":
         _cmd_init(args)
+    elif args.cmd == "demo":
+        _cmd_demo(args)
     else:
         parser.print_help()
 
@@ -175,6 +183,12 @@ def _cmd_init(args):
     written = generate_init_files(args.target, args.output, force=args.force)
     for path in written:
         print(f"Wrote {path}")
+
+
+def _cmd_demo(args):
+    from apeiron.demo import run_demo
+
+    run_demo(host=args.host, port=args.port, open_browser=not args.no_open)
 
 
 def _fetch_result_payload(result):
