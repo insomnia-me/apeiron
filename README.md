@@ -83,6 +83,16 @@ apeiron demo
 apeiron cache list
 ```
 
+## Recipes
+
+Start with [docs/recipes.md](docs/recipes.md) when you want a complete workflow instead of individual commands:
+
+- Give Claude Desktop web search.
+- Build a research agent.
+- Extract PDFs into Markdown.
+- Build a RAG corpus from URLs.
+- Monitor docs changes.
+
 ## Web Access Score
 
 Apeiron ships with a small reproducible benchmark that exercises public docs, HTML pages, research pages, PDF-like research URLs, and media-adjacent sources:

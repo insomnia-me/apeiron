@@ -40,6 +40,8 @@ Docker starts local SearXNG and FlareSolverr. It is not required for basic CLI, 
 
 After install, use [Agent Integrations](integrations.md) for copy-paste configs and tool wrappers.
 
+Use [Recipes](recipes.md) for complete workflows such as Claude Desktop web search, research agents, PDF extraction, and RAG corpus creation.
+
 For the fastest path, generate starter files:
 
 ```bash

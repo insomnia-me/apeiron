@@ -5,6 +5,8 @@ Apeiron can be used two ways:
 - run the MCP server and let an agent client call `apeiron_search`, `apeiron_fetch`, and `apeiron_learn`
 - wrap the Python API as native function tools in your own agent runtime
 
+For full copy-run-adapt workflows, see [Recipes](recipes.md).
+
 ## Generate Starter Files
 
 Use `apeiron init` when you want files written into a project instead of copying snippets by hand:
