@@ -28,6 +28,7 @@ Snapshot checked: 2026-06-13.
 | MCP-friendly | Yes, built-in MCP server | Ecosystem-dependent | Ecosystem-dependent | Ecosystem-dependent |
 | Search | arXiv, Wikipedia, GitHub, optional SearXNG | Web/search API | Search API | Search API |
 | Fetch/extract | Tiered local fetch/extract pipeline | Hosted scrape/crawl/extract API | Search/content extraction API | Search/contents API |
+| One-command research report | Yes, `apeiron research` | Product-specific workflows | Product-specific workflows | Product-specific workflows |
 | Cache visibility | Local SQLite cache commands | Hosted/platform-specific | Hosted/platform-specific | Hosted/platform-specific |
 | Best current pitch | Give local agents inspectable web access | Managed web data extraction at scale | Fast agent/RAG search API | AI-native search and contents API |
 

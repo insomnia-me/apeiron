@@ -44,6 +44,16 @@ apeiron cache clear
 
 Use `APEIRON_CACHE_DB=/path/to/project-cache.db` when you want a project-specific cache.
 
+## One-Command Research
+
+For quick agent-ready context, ask Apeiron to search and fetch in one step:
+
+```bash
+apeiron research "best open source MCP servers for web search" --markdown report.md
+```
+
+Use the generated Markdown as a context bundle or as a starting point for a RAG corpus.
+
 ## Claude Desktop
 
 Install Apeiron with the MCP extra, then add this to your Claude Desktop MCP config:

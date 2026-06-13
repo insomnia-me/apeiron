@@ -76,6 +76,7 @@ Set `APEIRON_INSTALL_PROFILE=all` before running the script if you also want bro
 apeiron doctor
 apeiron fetch "https://example.com" --json
 apeiron search "python web scraping" --sources wikipedia github arxiv --json
+apeiron research "agent web access MCP" --markdown report.md
 apeiron learn "https://example.com" --json
 apeiron bench
 apeiron init --target cursor --output .
@@ -94,6 +95,16 @@ Start with [docs/recipes.md](docs/recipes.md) when you want a complete workflow 
 - Monitor docs changes.
 
 For positioning against hosted web APIs, see [docs/comparison.md](docs/comparison.md).
+
+## Research Reports
+
+Turn a query into a Markdown source bundle:
+
+```bash
+apeiron research "best open source MCP servers for web search" --markdown report.md
+```
+
+The command searches, deduplicates URLs, fetches each source, and writes a report with source verdicts, tiers, confidence, warnings, and trimmed content.
 
 ## Web Access Score
 

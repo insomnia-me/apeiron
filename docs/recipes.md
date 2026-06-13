@@ -56,6 +56,14 @@ For OpenAI Agents SDK, generate a wrapper:
 apeiron init --target openai-agents --output .
 ```
 
+Or use the built-in one-command research workflow:
+
+```bash
+apeiron research "agent web access MCP local-first" --markdown report.md
+```
+
+The report includes fetched source content plus `verdict`, `tier`, `confidence`, and `warnings` for each source.
+
 ## Extract PDFs into Markdown
 
 Install with document extraction:

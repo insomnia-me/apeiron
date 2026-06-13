@@ -28,6 +28,16 @@ def main(fetch_fn=None):
     p_fetch.add_argument("--output", "-o", help="Save output to file")
     p_fetch.add_argument("--json", action="store_true", help="Print structured JSON")
 
+    # research
+    p_research = sub.add_parser("research", help="Search, fetch, and assemble a Markdown research report")
+    p_research.add_argument("query", help="Research query")
+    p_research.add_argument("--sources", nargs="*", default=None, help="Sources: web arxiv wikipedia github")
+    p_research.add_argument("--max", type=int, default=5, help="Max unique sources to fetch")
+    p_research.add_argument("--cache-ttl", type=int, default=300, help="Cache TTL for source fetches")
+    p_research.add_argument("--max-chars", type=int, default=6000, help="Max characters per source in Markdown")
+    p_research.add_argument("--markdown", "-m", help="Write Markdown report to file")
+    p_research.add_argument("--json", action="store_true", help="Print structured JSON")
+
     # learn
     p_learn = sub.add_parser("learn", help="Learn best strategy for a domain")
     p_learn.add_argument("url", help="URL to learn from")
@@ -76,6 +86,8 @@ def main(fetch_fn=None):
         _cmd_search(args)
     elif args.cmd == "fetch":
         _cmd_fetch(args)
+    elif args.cmd == "research":
+        _cmd_research(args)
     elif args.cmd == "learn":
         _cmd_learn(args)
     elif args.cmd == "serve":
@@ -97,17 +109,10 @@ def main(fetch_fn=None):
 def _cmd_search(args):
     import asyncio
     from apeiron.api.python_api import search as search_fn
-    from apeiron.types import Source
 
     sources = None
     if args.sources:
-        source_map = {
-            "web": Source.WEB, "arxiv": Source.ARXIV,
-            "semantic": Source.SEMANTIC_SCHOLAR, "scholar": Source.SEMANTIC_SCHOLAR,
-            "wikipedia": Source.WIKIPEDIA, "wiki": Source.WIKIPEDIA,
-            "reddit": Source.REDDIT, "github": Source.GITHUB,
-        }
-        sources = [source_map[s.lower()] for s in args.sources if s.lower() in source_map]
+        sources = _parse_sources(args.sources)
 
     results = asyncio.run(search_fn(args.query, sources, args.max))
 
@@ -147,6 +152,35 @@ def _cmd_fetch(args):
         print(f"Saved to {args.output}")
     else:
         print(result.content)
+
+
+def _cmd_research(args):
+    import asyncio
+    from apeiron.research import run_research
+
+    selected_sources = _parse_sources(args.sources) if args.sources else None
+    report = asyncio.run(
+        run_research(
+            args.query,
+            sources=selected_sources,
+            max_results=args.max,
+            cache_ttl=args.cache_ttl,
+            max_chars_per_source=args.max_chars,
+        )
+    )
+
+    if args.markdown:
+        with open(args.markdown, "w") as f:
+            f.write(report.markdown)
+
+    if args.json:
+        print(json.dumps(report.to_dict(), indent=2, ensure_ascii=False))
+        return
+
+    if args.markdown:
+        print(f"Saved research report to {args.markdown}")
+    else:
+        print(report.markdown)
 
 
 def _cmd_learn(args):
@@ -237,6 +271,22 @@ def _print_cache_entries(entries: list[dict], *, as_json: bool) -> None:
         print(f"{entry['url']} ({entry['chars']} chars)")
         if entry["preview"]:
             print(f"  {entry['preview'][:120]}")
+
+
+def _parse_sources(source_names: list[str]):
+    from apeiron.types import Source
+
+    source_map = {
+        "web": Source.WEB,
+        "arxiv": Source.ARXIV,
+        "semantic": Source.SEMANTIC_SCHOLAR,
+        "scholar": Source.SEMANTIC_SCHOLAR,
+        "wikipedia": Source.WIKIPEDIA,
+        "wiki": Source.WIKIPEDIA,
+        "reddit": Source.REDDIT,
+        "github": Source.GITHUB,
+    }
+    return [source_map[name.lower()] for name in source_names if name.lower() in source_map]
 
 
 def _fetch_result_payload(result):
