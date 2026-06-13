@@ -7,6 +7,8 @@ Apeiron can be used two ways:
 
 For full copy-run-adapt workflows, see [Recipes](recipes.md).
 
+For product positioning and hosted API trade-offs, see [Comparison](comparison.md).
+
 ## Generate Starter Files
 
 Use `apeiron init` when you want files written into a project instead of copying snippets by hand:

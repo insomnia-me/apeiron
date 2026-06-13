@@ -93,6 +93,8 @@ Start with [docs/recipes.md](docs/recipes.md) when you want a complete workflow 
 - Build a RAG corpus from URLs.
 - Monitor docs changes.
 
+For positioning against hosted web APIs, see [docs/comparison.md](docs/comparison.md).
+
 ## Web Access Score
 
 Apeiron ships with a small reproducible benchmark that exercises public docs, HTML pages, research pages, PDF-like research URLs, and media-adjacent sources:

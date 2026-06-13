@@ -42,6 +42,8 @@ After install, use [Agent Integrations](integrations.md) for copy-paste configs 
 
 Use [Recipes](recipes.md) for complete workflows such as Claude Desktop web search, research agents, PDF extraction, and RAG corpus creation.
 
+Use [Comparison](comparison.md) if you are deciding between Apeiron and hosted web APIs.
+
 For the fastest path, generate starter files:
 
 ```bash
