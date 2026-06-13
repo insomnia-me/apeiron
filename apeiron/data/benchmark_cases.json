@@ -1,0 +1,58 @@
+[
+  {
+    "id": "python-docs-tutorial",
+    "url": "https://docs.python.org/3/tutorial/",
+    "category": "docs",
+    "min_chars": 1200,
+    "required_contains": ["Python"]
+  },
+  {
+    "id": "github-docs-rest",
+    "url": "https://docs.github.com/en/rest",
+    "category": "docs",
+    "min_chars": 1200,
+    "required_contains": ["GitHub"]
+  },
+  {
+    "id": "wikipedia-web-scraping",
+    "url": "https://en.wikipedia.org/wiki/Web_scraping",
+    "category": "html",
+    "min_chars": 1200,
+    "required_contains": ["Web scraping"]
+  },
+  {
+    "id": "example-dot-com",
+    "url": "https://example.com/",
+    "category": "html",
+    "min_chars": 80,
+    "required_contains": ["documentation examples"]
+  },
+  {
+    "id": "arxiv-abs-attention",
+    "url": "https://arxiv.org/abs/1706.03762",
+    "category": "research",
+    "min_chars": 1000,
+    "required_contains": ["Attention"]
+  },
+  {
+    "id": "arxiv-pdf-attention",
+    "url": "https://arxiv.org/pdf/1706.03762",
+    "category": "research",
+    "min_chars": 1000,
+    "required_contains": ["Attention"]
+  },
+  {
+    "id": "youtube-dl-readme",
+    "url": "https://github.com/yt-dlp/yt-dlp",
+    "category": "media",
+    "min_chars": 1000,
+    "required_contains": ["yt-dlp"]
+  },
+  {
+    "id": "cloudflare-blog",
+    "url": "https://blog.cloudflare.com/",
+    "category": "html",
+    "min_chars": 1000,
+    "required_contains": ["Cloudflare"]
+  }
+]

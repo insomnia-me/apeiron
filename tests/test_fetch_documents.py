@@ -26,3 +26,9 @@ def test_fast_fetch_module_exposes_binary_helper():
     from apeiron.fetch.http import curl_cffi
 
     assert hasattr(curl_cffi, "fetch_curl_cffi_bytes")
+
+
+def test_arxiv_pdf_urls_are_treated_as_pdf_documents():
+    from apeiron.extract.utils import detect_content_type
+
+    assert detect_content_type("https://arxiv.org/pdf/1706.03762") == "pdf"

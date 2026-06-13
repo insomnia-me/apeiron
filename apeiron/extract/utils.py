@@ -10,7 +10,7 @@ def detect_content_type(url: str, html: str = "", headers: dict | None = None) -
 
     if re.search(r'youtube\.com|youtu\.be', parsed.netloc):
         return "youtube"
-    if path.endswith(".pdf"):
+    if path.endswith(".pdf") or ("arxiv.org" in parsed.netloc and path.startswith("/pdf/")):
         return "pdf"
     if path.endswith(".docx"):
         return "docx"
@@ -18,7 +18,7 @@ def detect_content_type(url: str, html: str = "", headers: dict | None = None) -
         return "pptx"
     if path.endswith(".xlsx"):
         return "xlsx"
-    if "arxiv.org" in parsed.netloc and ("pdf" in path or "abs" in path):
+    if "arxiv.org" in parsed.netloc and "abs" in path:
         return "arxiv"
 
     if html:

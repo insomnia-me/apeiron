@@ -88,6 +88,9 @@ mcp = [
 [tool.setuptools.packages.find]
 include = ["apeiron*"]
 
+[tool.setuptools.package-data]
+apeiron = ["data/*.json"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 

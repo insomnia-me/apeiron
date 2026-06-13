@@ -7,7 +7,7 @@ import argparse
 import json
 
 
-def main():
+def main(fetch_fn=None):
     parser = argparse.ArgumentParser(
         prog="apeiron",
         description="Apeiron — local-first web search, fetch, and extraction tools for AI agents",
@@ -40,6 +40,11 @@ def main():
     p_doctor = sub.add_parser("doctor", help="Check optional dependencies and local services")
     p_doctor.add_argument("--json", action="store_true", help="Print structured JSON")
 
+    # bench
+    p_bench = sub.add_parser("bench", help="Run the bundled web access benchmark")
+    p_bench.add_argument("--json", action="store_true", help="Print structured JSON")
+    p_bench.add_argument("--cache-ttl", type=int, default=0, help="Cache TTL for benchmark fetches")
+
     args = parser.parse_args()
 
     if args.cmd == "search":
@@ -52,6 +57,8 @@ def main():
         _cmd_serve()
     elif args.cmd == "doctor":
         _cmd_doctor(args)
+    elif args.cmd == "bench":
+        _cmd_bench(args, fetch_fn=fetch_fn)
     else:
         parser.print_help()
 
@@ -138,6 +145,20 @@ def _cmd_doctor(args):
         print(json.dumps(report, indent=2, ensure_ascii=False))
     else:
         print(format_diagnostics(report))
+
+
+def _cmd_bench(args, fetch_fn=None):
+    import asyncio
+    from apeiron.benchmarks import format_benchmark_report, run_benchmark
+
+    kwargs = {"cache_ttl": args.cache_ttl}
+    if fetch_fn is not None:
+        kwargs["fetch_fn"] = fetch_fn
+    report = asyncio.run(run_benchmark(**kwargs))
+    if args.json:
+        print(json.dumps(report.to_dict(), indent=2, ensure_ascii=False))
+    else:
+        print(format_benchmark_report(report))
 
 
 def _fetch_result_payload(result):

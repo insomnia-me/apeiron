@@ -77,7 +77,19 @@ apeiron doctor
 apeiron fetch "https://example.com" --json
 apeiron search "python web scraping" --sources wikipedia github arxiv --json
 apeiron learn "https://example.com" --json
+apeiron bench
 ```
+
+## Web Access Score
+
+Apeiron ships with a small reproducible benchmark that exercises public docs, HTML pages, research pages, PDF-like research URLs, and media-adjacent sources:
+
+```bash
+apeiron bench
+apeiron bench --json
+```
+
+The command reports an `Apeiron Web Access Score` plus per-URL verdicts, tiers, content sizes, and failure reasons. Use it before and after installing optional extras or browser tiers to see what actually improved on your machine. See [docs/benchmarks.md](docs/benchmarks.md).
 
 ## MCP server
 
@@ -154,7 +166,6 @@ Apeiron is for fetching public URLs and converting public content into agent-fri
 
 - Green deterministic CI on every pull request.
 - More tests around fetch tier selection and extraction.
-- Benchmark table with dated results and reproducible commands.
+- Larger dated benchmark table with reproducible public URL sets.
 - Better browser-tier diagnostics.
 - Explicit Reddit OAuth integration or removal from public source list.
-
