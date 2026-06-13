@@ -201,6 +201,8 @@ def _fetch_result_payload(result):
         "title": result.title,
         "elapsed_ms": result.elapsed_ms,
         "error": result.error,
+        "confidence": result.confidence,
+        "warnings": result.warnings,
     }
 
 

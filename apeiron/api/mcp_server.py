@@ -55,6 +55,8 @@ async def apeiron_fetch(url: str, cache_ttl: int = 300) -> str:
         "title": result.title,
         "elapsed_ms": result.elapsed_ms,
         "error": result.error,
+        "confidence": result.confidence,
+        "warnings": result.warnings,
     }, indent=2, ensure_ascii=False)
 
 
@@ -74,6 +76,8 @@ async def apeiron_learn(url: str) -> str:
         "title": result.title,
         "elapsed_ms": result.elapsed_ms,
         "error": result.error,
+        "confidence": result.confidence,
+        "warnings": result.warnings,
     }, indent=2, ensure_ascii=False)
 
 

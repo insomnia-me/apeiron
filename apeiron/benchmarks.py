@@ -35,6 +35,8 @@ class BenchmarkResult:
     content_type: str
     title: str
     error: str
+    confidence: float
+    warnings: list[str]
 
 
 @dataclass(frozen=True)
@@ -86,6 +88,8 @@ async def run_benchmark(
                 content_type=result.content_type,
                 title=result.title,
                 error=result.error,
+                confidence=result.confidence or 0.0,
+                warnings=result.warnings,
             )
         )
 

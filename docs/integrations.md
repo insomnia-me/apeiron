@@ -26,7 +26,7 @@ Use the local demo when you want to see the fetch pipeline before wiring it into
 apeiron demo
 ```
 
-The page shows the extracted content and the diagnostics an agent receives: `verdict`, `tier`, `content_type`, and output size.
+The page shows the extracted content and the diagnostics an agent receives: `verdict`, `tier`, `confidence`, `warnings`, `content_type`, and output size.
 
 ## Claude Desktop
 
@@ -154,5 +154,6 @@ Keep the tool boundary narrow:
 
 - `apeiron_search` should return titles, URLs, snippets, sources, and scores.
 - `apeiron_fetch` should return content plus `tier`, `verdict`, `content_type`, `title`, `elapsed_ms`, and `error`.
+- Agents should use `confidence` and `warnings` to decide whether to trust, retry, or ask for another source.
 - Agents should inspect `verdict` and `error` before trusting a result.
 - Long content should be trimmed or chunked by the host agent runtime.

@@ -20,6 +20,8 @@ async def test_mcp_fetch_returns_structured_result(monkeypatch):
             content_type="text",
             title="Greeting",
             elapsed_ms=12.5,
+            confidence=0.91,
+            warnings=[],
         )
 
     monkeypatch.setattr(mcp_server, "fetch", fake_fetch)
@@ -35,4 +37,6 @@ async def test_mcp_fetch_returns_structured_result(monkeypatch):
         "title": "Greeting",
         "elapsed_ms": 12.5,
         "error": "",
+        "confidence": 0.91,
+        "warnings": [],
     }

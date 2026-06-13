@@ -23,7 +23,15 @@ def test_cli_fetch_json(monkeypatch, capsys):
     from apeiron.api import python_api
 
     async def fake_fetch(url: str, cache_ttl: int = 300):
-        return FetchResult(url=url, content="hello", tier=Tier.FAST, verdict=Verdict.SUCCESS, content_type="text")
+        return FetchResult(
+            url=url,
+            content="hello",
+            tier=Tier.FAST,
+            verdict=Verdict.SUCCESS,
+            content_type="text",
+            confidence=0.84,
+            warnings=["short content"],
+        )
 
     monkeypatch.setattr(python_api, "fetch", fake_fetch)
     monkeypatch.setattr(sys, "argv", ["apeiron", "fetch", "https://example.com", "--json"])
@@ -35,3 +43,5 @@ def test_cli_fetch_json(monkeypatch, capsys):
     assert payload["verdict"] == "success"
     assert payload["tier"] == "fast"
     assert payload["content"] == "hello"
+    assert payload["confidence"] == 0.84
+    assert payload["warnings"] == ["short content"]

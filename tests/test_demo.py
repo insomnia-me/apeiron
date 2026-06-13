@@ -15,6 +15,7 @@ def test_demo_html_contains_fetch_controls():
 
     assert "Apeiron Demo" in html
     assert 'id="url-input"' in html
+    assert 'id="confidence"' in html
     assert "/api/fetch" in html
 
 

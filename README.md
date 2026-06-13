@@ -101,7 +101,7 @@ Run a local browser UI for quick URL-to-content testing:
 apeiron demo
 ```
 
-It opens a minimal page with a URL input, extracted content, verdict, tier, content type, and character count.
+It opens a minimal page with a URL input, extracted content, verdict, tier, confidence, warnings, content type, and character count.
 
 ## MCP server
 

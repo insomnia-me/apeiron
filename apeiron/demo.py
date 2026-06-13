@@ -197,6 +197,8 @@ def render_demo_html() -> str:
           <div class="metric"><span>tier</span><strong id="tier">-</strong></div>
           <div class="metric"><span>type</span><strong id="content-type">-</strong></div>
           <div class="metric"><span>chars</span><strong id="chars">0</strong></div>
+          <div class="metric"><span>confidence</span><strong id="confidence">-</strong></div>
+          <div class="metric"><span>warnings</span><strong id="warnings">0</strong></div>
         </div>
       </section>
       <section class="output">
@@ -218,6 +220,8 @@ def render_demo_html() -> str:
       tier: document.getElementById('tier'),
       contentType: document.getElementById('content-type'),
       chars: document.getElementById('chars'),
+      confidence: document.getElementById('confidence'),
+      warnings: document.getElementById('warnings'),
     };
 
     form.addEventListener('submit', async (event) => {
@@ -240,6 +244,8 @@ def render_demo_html() -> str:
         fields.tier.textContent = payload.tier || '-';
         fields.contentType.textContent = payload.content_type || '-';
         fields.chars.textContent = String((payload.content || '').length);
+        fields.confidence.textContent = payload.confidence == null ? '-' : String(payload.confidence);
+        fields.warnings.textContent = String((payload.warnings || []).length);
         statusEl.textContent = payload.url;
         statusEl.className = payload.verdict === 'success' ? 'status ok' : 'status warn';
         contentEl.textContent = payload.content || payload.error || '';
@@ -328,4 +334,6 @@ def _fetch_result_payload(result: FetchResult) -> dict:
         "title": result.title,
         "elapsed_ms": result.elapsed_ms,
         "error": result.error,
+        "confidence": result.confidence,
+        "warnings": result.warnings,
     }

@@ -16,6 +16,7 @@ The output is an `Apeiron Web Access Score` plus one result per URL. Each result
 - extracted character count
 - elapsed time
 - failure reason
+- confidence and warnings
 
 ## Reproduce
 
