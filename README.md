@@ -80,6 +80,7 @@ apeiron learn "https://example.com" --json
 apeiron bench
 apeiron init --target cursor --output .
 apeiron demo
+apeiron cache list
 ```
 
 ## Web Access Score
@@ -102,6 +103,18 @@ apeiron demo
 ```
 
 It opens a minimal page with a URL input, extracted content, verdict, tier, confidence, warnings, content type, and character count.
+
+## Cache Memory
+
+Apeiron stores successful fetch output in a local SQLite cache so repeated agent calls can reuse prior reads:
+
+```bash
+apeiron cache list
+apeiron cache search "packaging"
+apeiron cache clear
+```
+
+Set `APEIRON_CACHE_DB=/path/to/cache.db` to point a project or test run at an isolated cache file.
 
 ## MCP server
 

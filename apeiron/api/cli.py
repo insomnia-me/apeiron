@@ -57,6 +57,19 @@ def main(fetch_fn=None):
     p_demo.add_argument("--port", type=int, default=8765, help="Port to bind")
     p_demo.add_argument("--no-open", action="store_true", help="Do not open a browser")
 
+    # cache
+    p_cache = sub.add_parser("cache", help="Inspect or clear the local response cache")
+    cache_sub = p_cache.add_subparsers(dest="cache_cmd")
+    p_cache_list = cache_sub.add_parser("list", help="List recent cached fetches")
+    p_cache_list.add_argument("--limit", type=int, default=50)
+    p_cache_list.add_argument("--json", action="store_true", help="Print structured JSON")
+    p_cache_search = cache_sub.add_parser("search", help="Search cached URLs and content")
+    p_cache_search.add_argument("query")
+    p_cache_search.add_argument("--limit", type=int, default=20)
+    p_cache_search.add_argument("--json", action="store_true", help="Print structured JSON")
+    p_cache_clear = cache_sub.add_parser("clear", help="Clear cached fetches")
+    p_cache_clear.add_argument("--json", action="store_true", help="Print structured JSON")
+
     args = parser.parse_args()
 
     if args.cmd == "search":
@@ -75,6 +88,8 @@ def main(fetch_fn=None):
         _cmd_init(args)
     elif args.cmd == "demo":
         _cmd_demo(args)
+    elif args.cmd == "cache":
+        _cmd_cache(args)
     else:
         parser.print_help()
 
@@ -189,6 +204,39 @@ def _cmd_demo(args):
     from apeiron.demo import run_demo
 
     run_demo(host=args.host, port=args.port, open_browser=not args.no_open)
+
+
+def _cmd_cache(args):
+    from apeiron.cache import ResponseCache
+
+    cache = ResponseCache()
+    if args.cache_cmd == "list":
+        entries = cache.list_entries(limit=args.limit)
+        _print_cache_entries(entries, as_json=args.json)
+        return
+    if args.cache_cmd == "search":
+        entries = cache.search(args.query, limit=args.limit)
+        _print_cache_entries(entries, as_json=args.json)
+        return
+    if args.cache_cmd == "clear":
+        cache.clear()
+        payload = {"cleared": True}
+        if args.json:
+            print(json.dumps(payload, indent=2, ensure_ascii=False))
+        else:
+            print("Cleared cache")
+        return
+    print("Usage: apeiron cache list|search|clear")
+
+
+def _print_cache_entries(entries: list[dict], *, as_json: bool) -> None:
+    if as_json:
+        print(json.dumps(entries, indent=2, ensure_ascii=False))
+        return
+    for entry in entries:
+        print(f"{entry['url']} ({entry['chars']} chars)")
+        if entry["preview"]:
+            print(f"  {entry['preview'][:120]}")
 
 
 def _fetch_result_payload(result):

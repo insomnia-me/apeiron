@@ -28,6 +28,18 @@ apeiron demo
 
 The page shows the extracted content and the diagnostics an agent receives: `verdict`, `tier`, `confidence`, `warnings`, `content_type`, and output size.
 
+## Cache Workflow
+
+Agents often ask for the same page more than once. Apeiron keeps successful fetch output in a local SQLite cache and exposes it through the CLI:
+
+```bash
+apeiron cache list
+apeiron cache search "model context protocol"
+apeiron cache clear
+```
+
+Use `APEIRON_CACHE_DB=/path/to/project-cache.db` when you want a project-specific cache.
+
 ## Claude Desktop
 
 Install Apeiron with the MCP extra, then add this to your Claude Desktop MCP config:

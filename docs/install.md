@@ -45,3 +45,11 @@ For the fastest path, generate starter files:
 ```bash
 apeiron init --target cursor --output .
 ```
+
+## Cache Location
+
+By default Apeiron stores cached fetches under the local application cache directory. Override it per project or CI run with:
+
+```bash
+export APEIRON_CACHE_DB="$PWD/.apeiron-cache.db"
+```
